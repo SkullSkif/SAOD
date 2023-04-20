@@ -3,7 +3,7 @@
 #include <inttypes.h>
 #include <sys/time.h>
 #include <math.h>
-#define max_element 10                      // Максимальный элемент массива
+#define max_element 100000                      // Максимальный элемент массива
 
 double wtime()
 {
@@ -27,7 +27,7 @@ uint32_t* getArray(int size)
 }
 
 // Функция сортировки подсчетом: На вход получает массив для сортировки, максимальный элемент массива, количество элементов в массиве. Возвращает отсортированный массив
-uint32_t* CountSort(uint32_t* array, int maxelement, int size)
+void CountSort(uint32_t* array, int maxelement, int size)
 {
     uint32_t* countarray = (uint32_t*)calloc(maxelement+1,sizeof(uint32_t));
     for (int i = 0;i < size;i++)                          // Заполняет массив подсчета количеством повторяющихся элементов
@@ -37,10 +37,9 @@ uint32_t* CountSort(uint32_t* array, int maxelement, int size)
         for (int j = 0;j < countarray[i];j++)
             array[s++] = i;
     free(countarray);
-    return array;
 }
 
-uint32_t* InsertionSort(uint32_t* array, int size)
+void InsertionSort(uint32_t* array, int size)
 {
 int i, j, temp;
 for (i = 1; i < size; i++)
@@ -56,19 +55,7 @@ for (i = 1; i < size; i++)
     }
 }
    
-    return array;
 }
-
-/*void MergeSort(uint32_t* array, int size)
-{
-    if (size < 2)
-        return;
-    MergeSort(array, size / 2);
-    MergeSort(&array[size / 2], size - (size / 2) );
-    
-
-    return array;
-}*/
 
 void Merge(uint32_t* array, int low, int mid, int high)
 {
@@ -111,7 +98,6 @@ void MergeSort(uint32_t* array, int low, int high)
     
     if (low < high)
         {
-            //int mid = 0;
             int mid = (int)floor((low + high) / 2);
             MergeSort(array, low, mid);
             MergeSort(array, mid + 1, high);
@@ -124,35 +110,52 @@ void MergeSort(uint32_t* array, int low, int high)
 
 int main()
 {
-    int N = 15;                                           // Количество элементов в массиве
+    int N = 50000;                                           // Количество элементов в массиве
+    FILE* data = fopen("data.txt", "w+t");
+    double time;
+     uint32_t* countarray = getArray(N);
+    uint32_t* insertarray = getArray(N);
+    uint32_t* mergarray = getArray(N);
+    for (N = 50000;N<1000000;N+=50000)
+        {
+            fprintf(data, "%d\t",N);
+            time = wtime();
+            CountSort(countarray, max_element, N);
+            fprintf(data,"%f\t",(time=-wtime()));
+            time = wtime();
+            InsertionSort(insertarray, N);
+            fprintf(data,"%f\t",(time=-wtime()));
+            time = wtime();
+            MergeSort(mergarray,0,N-1);
+            fprintf(data,"%f\n",(time=-wtime()));
+        }
+    // uint32_t* array = getArray(N);
+    // for (int i = 0;i<N;i++)
+    //     printf("%d ",array[i]);
+    // printf(" | Массив на вход\n");
+
+    // CountSort(countarray, max_element, N);
+    // for (int i = 0;i<N;i++)
+    //     printf("%d ",countarray[i]);
+    // printf(" | Массив отсортированный методом подсчета\n\n");
+    // free(countarray);
+
+    // array = getArray(N);
+    // for (int i = 0;i<N;i++)
+    //     printf("%d ",array[i]);
+    // printf(" | Массив на вход\n");
     
-    uint32_t* array = getArray(N);
-    for (int i = 0;i<N;i++)
-        printf("%d ",array[i]);
-    printf(" | Массив на вход\n");
+    // uint32_t* insertionsort = InsertionSort(array, N);
+    // for (int i = 0;i<N;i++)
+    //     printf("%d ",insertionsort[i]);
+    // printf(" | Массив отсортированный методов вставок\n\n");
+    // free(array);
 
-    /*uint32_t* countsort = CountSort(array, max_element, N);
-    for (int i = 0;i<N;i++)
-        printf("%d ",countsort[i]);
-    printf(" | Массив отсортированный методом подсчета\n\n");
-    free(array);
-
-    array = getArray(N);
-    for (int i = 0;i<N;i++)
-        printf("%d ",array[i]);
-    printf(" | Массив на вход\n");
-    
-    uint32_t* insertionsort = InsertionSort(array, N);
-    for (int i = 0;i<N;i++)
-        printf("%d ",insertionsort[i]);
-    printf(" | Массив отсортированный методов вставок\n\n");
-    free(array);*/
-
-    //uint32_t* sort = MergeSort(array,0,N);
-    MergeSort(array, 0, N-1);
-    for (int i = 0;i<N-1;i++)
-        printf("%d ",array[i]);
-    printf(" | Массив отсортированный методом слияния\n\n");    
+    // uint32_t* sort = MergeSort(array,0,N);
+    // MergeSort(array, 0, N-1);
+    // for (int i = 0;i<N-1;i++)
+    //     printf("%d ",array[i]);
+    // printf(" | Массив отсортированный методом слияния\n\n");  
 
     return 0;
 }
