@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "time.h": "c",
+        "select.h": "c",
+        "time_t.h": "c",
+        "struct_timeval.h": "c",
+        "stdio.h": "c",
+        "stdlib.h": "c"
+    }
+}
