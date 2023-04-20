@@ -101,7 +101,7 @@ int main()
 {
     // int G = 0;
     int N = 0;                                           // Количество элементов в массиве
-    FILE* data = fopen("data.txt", "w+t");
+    FILE* data = fopen("sort.dat", "w+t");
     double time;
     // uint32_t* countarray = getArray(N);
     // for (N = 50000;N<=1000000;N+=50000)
@@ -135,15 +135,18 @@ int main()
         for (N = 10000; N <= 150000; N += 10000)
     {
         fprintf(data, "%d   ", N);
+        
         uint32_t* countarray = getArray(N);
         time = wtime();
         CountSort(countarray, max_element, N);
         fprintf(data, "\t%f", (wtime() - time));
-       uint32_t* insertarray = getArray(N);
+        
+        uint32_t* insertarray = getArray(N);
         time = wtime();
         InsertionSort(insertarray, N);
         fprintf(data, "\t%f", (wtime() - time));
-       uint32_t* mergarray = getArray(N);
+        
+        uint32_t* mergarray = getArray(N);
         time = wtime();
         MergeSort(mergarray, 0, N - 1);
         fprintf(data, "\t%f\n", (wtime() - time));
