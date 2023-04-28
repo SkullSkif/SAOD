@@ -1,10 +1,8 @@
 all:
 	gcc -Wall -g3 main.c
-
+	
 .PHONY: plot
-plot:
-	gnuplot q sort.dat
-
-.PHONY: insplot
+plot: insplot
+	gnuplot -c q sort.dat
 insplot:
-	gnuplot ins inssort.dat
+	gnuplot -c ins inssort.dat
