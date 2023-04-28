@@ -55,7 +55,7 @@ void Merge(uint32_t* array, int low, int mid, int high)
     uint32_t* mergearray = (uint32_t*)calloc(high - low + 1,sizeof(uint32_t));
     for (int i = low; i <= high; i++)
         mergearray[i - low] = array[i];
-    int lowLeft = low - low;
+    int lowLeft = 0;
     int lowRight = mid - low + 1;
     int i = low;
     while ((lowLeft <= mid - low) && (lowRight <= high - low))
@@ -102,59 +102,38 @@ int main()
     // int G = 0;
     int N = 0;                                           // Количество элементов в массиве
     FILE* data = fopen("sort.dat", "w+t");
+    FILE* insdata = fopen("inssort.dat","w+t");
     double time;
-    // uint32_t* countarray = getArray(N);
-    // for (N = 50000;N<=1000000;N+=50000)
-    //     {
-    //         fprintf(data, "%d\t",N);
-    //         time = wtime();
-    //         CountSort(countarray, max_element, N);
-    //         fprintf(data,"%f\t",(wtime()-time));
-    //         countarray = (uint32_t*) realloc(countarray,sizeof(uint32_t)*(N));
-    //     }
 
-    //  uint32_t* countarray = getArray(N);
-    // uint32_t* insertarray = getArray(N);
-    // uint32_t* mergarray = getArray(N);
-    // for (N = 50000;N<=1000000;N+=50000)
-    //     {
-    //         fprintf(data, "%d\t",N);
-    //         time = wtime();
-    //         CountSort(countarray, max_element, N);
-    //         fprintf(data,"%f\t",(wtime()-time));
-    //         time = wtime();
-    //         InsertionSort(insertarray, N);
-    //         fprintf(data,"%f\t",(wtime()-time));
-    //         time = wtime();
-    //         MergeSort(mergarray,0,N-1);
-    //         fprintf(data,"%f\n",(wtime()-time));
-    //         G++;
-    //     }
-    
-    
-        for (N = 10000; N <= 150000; N += 10000)
-    {
-        fprintf(data, "%d   ", N);
+        for (N = 50000; N <= 1000000; N += 50000)
+        {
+            fprintf(data, "%d   ", N);
         
-        uint32_t* countarray = getArray(N);
-        time = wtime();
-        CountSort(countarray, max_element, N);
-        fprintf(data, "\t%f", (wtime() - time));
-        
-        uint32_t* insertarray = getArray(N);
-        time = wtime();
-        InsertionSort(insertarray, N);
-        fprintf(data, "\t%f", (wtime() - time));
-        
-        uint32_t* mergarray = getArray(N);
-        time = wtime();
-        MergeSort(mergarray, 0, N - 1);
-        fprintf(data, "\t%f\n", (wtime() - time));
-        
-    }
+            uint32_t* countarray = getArray(N);
+            time = wtime();
+            CountSort(countarray, max_element, N);
+            fprintf(data, "\t%f", (wtime() - time));
+            free(countarray);    
+            uint32_t* mergarray = getArray(N);
+            time = wtime();
+            MergeSort(mergarray, 0, N - 1);
+            fprintf(data, "\t%f\n", (wtime() - time));
+            free(mergarray);
+        }
+        for ( N = 10000;N<=50000;N+=10000)
+            {       
+            fprintf(insdata, "%d   ", N);
+            
+            uint32_t* insertarray = getArray(N);
+            time = wtime();
+            InsertionSort(insertarray, N);
+            fprintf(insdata, "%f\n", (wtime() - time));
+            free(insertarray);
+            } 
     
-    
-    
+    fclose(data);
+    fclose(insdata);
     return 0;
 }
+
 
